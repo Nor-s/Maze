@@ -7,11 +7,12 @@
 #define ROAD 2
 #define START_POS 3
 
-struct maze{
+struct background{
     int **map;
     struct point startPos;
     struct point currentPos;
 };
 
-void initialMap(struct maze *tmp);
+void initialMap(struct background *tmp);
+void showMap(const struct background *tmp);
 #endif

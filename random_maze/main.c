@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include "point.h"
+#include "maze.h"
+
 int main(void)
 {
-	srand(time(NULL));
-	maze game(25);
-	game.show_maze();
+	struct background maze;
+	initialMap(&maze);
+	showMap(&maze);
 }
