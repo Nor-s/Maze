@@ -13,6 +13,7 @@ struct background{
     struct point currentPos;
 };
 
+struct point nextPoint(struct background *tmp);
 void initialMap(struct background *tmp);
-void showMap(const struct background *tmp);
+void showMap(struct background *tmp);
 #endif
