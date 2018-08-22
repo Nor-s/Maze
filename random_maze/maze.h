@@ -1,7 +1,7 @@
 #ifndef MAZE_H
 #define MAZE_H
 
-#define MAZE_SIZE 15
+#define MAZE_SIZE 20
 #define NILL 0
 #define WALL 1
 #define ROAD 2
@@ -17,5 +17,5 @@ struct background{
 struct point nextPoint(struct background *tmp);
 void initialMap(struct background *tmp);
 void showMap(struct background *tmp);
-void showPartMap(struct background *tmp);
+void showCurrentMap(struct background *tmp);
 #endif

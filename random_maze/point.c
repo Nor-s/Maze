@@ -16,9 +16,7 @@ struct point initialPoint(int x,  int y, int handle)
 
 struct point startPoint(void)
 {
-    struct point temp = initialPoint( rand() % (MAZE_SIZE-2) + 1, rand() % (MAZE_SIZE-2) + 1, rand()%4 + 1);
-
-    return temp;
+    return initialPoint( rand() % (MAZE_SIZE-2) + 1, rand() % (MAZE_SIZE-2) + 1, rand()%4 + 1);
 }
 
 struct point handlePoint(int x, int y, int handle)
@@ -42,7 +40,7 @@ bool checkNext(int x, int y, int **map)
     return false;
 }
 
-//it is NILL -> true
+//it is NILL -> false
 bool checkNextNill( int x, int y,int handle,int **map)
 {
     struct point temp = initialPoint(x, y, handle);

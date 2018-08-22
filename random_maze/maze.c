@@ -6,6 +6,7 @@
 #include "point.h"
 #include "maze.h"
 
+//#define DEBUG
 
 void gotoxy(short x, short y)
 {
@@ -52,39 +53,51 @@ void makeAdjWall(struct background *tmp, int handle)
                     makeOneWall(tmp->currentPos.x,tmp->currentPos.y-1, tmp->map); break;
     }
 }
+/* a better method: (around == nill -> push stack)  & (if !checkNext -> pop) */
+/* another method:  linked list: start <- next <- nextnext......             */
 struct point nextPoint(struct background *tmp)
 {
     int tmphandle = rand() % 4 + 1;
     struct point next = tmp->currentPos;
 
-    while (!checkNext(next.x, next.y, tmp->map)) {            // a better method: (around == nill -> push stack)  & (if !check -> pop) 
-                                        // if "next" is start point -> Look for WALL adjacent to NILL
-           printf("!dril: %d\n", next.handle);
+    while (!checkNext(next.x, next.y, tmp->map)) {
+              
            next = findDril(tmp->map);
            tmp->map[next.y][next.x] = ROAD;
+#ifdef DEBUG
+           printf("dril x: %d, y: %d, handle: %d\n", next.x, next.y, next.handle);  
+#endif
     }
     while (checkNextNill(next.x, next.y, tmphandle, tmp->map)) {
         tmphandle = rand() % 4 + 1;
     }
-     makeAdjWall(tmp,tmphandle);                                    //order change ->        
+     makeAdjWall(tmp,tmphandle);    
 
-    tmp->currentPos = handlePoint(next.x, next.y, tmphandle); ;        // it's now Road & around = wall
+    tmp->currentPos = handlePoint(next.x, next.y, tmphandle);
 }
+
+/* check all map -> exist NILL?            */
+/* if true -> choice nextpoint -> set Road */
 void mazeCons(struct background *tmp)
 {
+#ifdef DEBUG
     printf("startpoint handle: %d\n", tmp->currentPos.handle);
-   // makeAdjWall(tmp);
+#endif
     while(checkNil(tmp)) {
         nextPoint(tmp);
+#ifdef DEBUG
         printf("nextpoint handle: %d\n", tmp->currentPos.handle);
-        if (tmp->map[tmp->currentPos.y][tmp->currentPos.x] == NILL){
+#endif
+        if (tmp->map[tmp->currentPos.y][tmp->currentPos.x] == NILL)  {
             tmp->map[tmp->currentPos.y][tmp->currentPos.x] = ROAD;
+#ifdef DEBUG
             printf("Draw Road: %d, %d\n",tmp->currentPos.x ,tmp->currentPos.y);
+#endif
         }
-        else{
-             printf("current Road: %d, %d\n",tmp->currentPos.x ,tmp->currentPos.y);
-        }
-        showPartMap(tmp);
+#ifdef DEBUG
+        printf("current Road: %d, %d\n",tmp->currentPos.x ,tmp->currentPos.y);
+        showCurrentMap(tmp);
+#endif
     }
 }
 
@@ -109,13 +122,15 @@ void initialMap(struct background *tmp)
     *(*(tmp->map + tmp->currentPos.y) + tmp->currentPos.x) = END_POS;
 }
 
-void showMap(struct background *tmp)   //goto xy
+void showMap(struct background *tmp)
 {
     int i, j;
 
     for (i = 0; i < MAZE_SIZE ; i++) {
         for (j = 0; j < MAZE_SIZE ; j++) {
+#ifndef DEBUG
             gotoxy(j * 2, i);
+#endif
             switch (*(*(tmp->map + i)+ j)) {
                 case NILL:      printf("..");  break;
                 case ROAD:      printf("  ");  break;
@@ -124,16 +139,21 @@ void showMap(struct background *tmp)   //goto xy
                 case END_POS:   printf("GG");  break;
             }
         }
-      //  putchar('\n');
+#ifdef DEBUG
+        putchar('\n');
+#endif
     }
 }
-void showPartMap(struct background *tmp)   //goto xy
+
+void showCurrentMap(struct background *tmp) 
 {
     int i, j;
 
     for (i = tmp->currentPos.y - 1; i < tmp->currentPos.y + 2; i++) {
         for (j = tmp->currentPos.x - 1; j < tmp->currentPos.x + 2 ; j++) {
+#ifndef DEBUG
             gotoxy(j * 2, i);
+#endif
             switch (*(*(tmp->map + i)+ j)) {
                 case NILL:      printf("..");  break;
                 case ROAD:      printf("  ");  break;
@@ -142,6 +162,8 @@ void showPartMap(struct background *tmp)   //goto xy
                 case END_POS:   printf("GG");  break;
             }
         }
-      //  putchar('\n');
+#ifdef DEBUG
+        putchar('\n');
+#endif
     }
 }
