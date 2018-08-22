@@ -84,7 +84,7 @@ void mazeCons(struct background *tmp)
         else{
              printf("current Road: %d, %d\n",tmp->currentPos.x ,tmp->currentPos.y);
         }
-        showMap(tmp);
+        showPartMap(tmp);
     }
 }
 
@@ -114,8 +114,8 @@ void showMap(struct background *tmp)   //goto xy
     int i, j;
 
     for (i = 0; i < MAZE_SIZE ; i++) {
-        for (j = 0; j < MAZE_SIZE ; j++){
-            //gotoxy(j * 2, i);
+        for (j = 0; j < MAZE_SIZE ; j++) {
+            gotoxy(j * 2, i);
             switch (*(*(tmp->map + i)+ j)) {
                 case NILL:      printf("..");  break;
                 case ROAD:      printf("  ");  break;
@@ -124,6 +124,24 @@ void showMap(struct background *tmp)   //goto xy
                 case END_POS:   printf("GG");  break;
             }
         }
-        putchar('\n');
+      //  putchar('\n');
+    }
+}
+void showPartMap(struct background *tmp)   //goto xy
+{
+    int i, j;
+
+    for (i = tmp->currentPos.y - 1; i < tmp->currentPos.y + 2; i++) {
+        for (j = tmp->currentPos.x - 1; j < tmp->currentPos.x + 2 ; j++) {
+            gotoxy(j * 2, i);
+            switch (*(*(tmp->map + i)+ j)) {
+                case NILL:      printf("..");  break;
+                case ROAD:      printf("  ");  break;
+                case WALL:      printf("[]");  break;
+                case START_POS: printf("SS");  break;
+                case END_POS:   printf("GG");  break;
+            }
+        }
+      //  putchar('\n');
     }
 }

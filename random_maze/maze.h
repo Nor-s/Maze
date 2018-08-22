@@ -17,4 +17,5 @@ struct background{
 struct point nextPoint(struct background *tmp);
 void initialMap(struct background *tmp);
 void showMap(struct background *tmp);
+void showPartMap(struct background *tmp);
 #endif
