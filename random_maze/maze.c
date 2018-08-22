@@ -31,9 +31,9 @@ void makeOneWall( int x,  int y, int **map)
     if (map[y][x] == NILL)
         map[y][x] = WALL;
 }
-void makeAdjWall(struct background *tmp)
+void makeAdjWall(struct background *tmp, int handle)
 {
-    switch(tmp->currentPos.handle) {
+    switch(handle) {
         case UP:    
                     makeOneWall(tmp->currentPos.x+1,tmp->currentPos.y, tmp->map); 
                     makeOneWall(tmp->currentPos.x-1,tmp->currentPos.y, tmp->map); 
@@ -61,26 +61,30 @@ struct point nextPoint(struct background *tmp)
                                         // if "next" is start point -> Look for WALL adjacent to NILL
            printf("!dril: %d\n", next.handle);
            next = findDril(tmp->map);
-           tmp->map[tmp->currentPos.y][tmp->currentPos.x] = ROAD;
+           tmp->map[next.y][next.x] = ROAD;
     }
     while (checkNextNill(next.x, next.y, tmphandle, tmp->map)) {
         tmphandle = rand() % 4 + 1;
     }
-     makeAdjWall(tmp);
-    next = handlePoint(next.x, next.y, tmphandle); 
-    next.handle = tmphandle;   
-    tmp->currentPos = next;                      // it's now Road & around = wall
+     makeAdjWall(tmp,tmphandle);                                    //order change ->        
+
+    tmp->currentPos = handlePoint(next.x, next.y, tmphandle); ;        // it's now Road & around = wall
 }
 void mazeCons(struct background *tmp)
 {
     printf("startpoint handle: %d\n", tmp->currentPos.handle);
-    makeAdjWall(tmp);
+   // makeAdjWall(tmp);
     while(checkNil(tmp)) {
         nextPoint(tmp);
-        showMap(tmp);
-        Sleep(1000);
         printf("nextpoint handle: %d\n", tmp->currentPos.handle);
-        tmp->map[tmp->currentPos.y][tmp->currentPos.x] = ROAD;
+        if (tmp->map[tmp->currentPos.y][tmp->currentPos.x] == NILL){
+            tmp->map[tmp->currentPos.y][tmp->currentPos.x] = ROAD;
+            printf("Draw Road: %d, %d\n",tmp->currentPos.x ,tmp->currentPos.y);
+        }
+        else{
+             printf("current Road: %d, %d\n",tmp->currentPos.x ,tmp->currentPos.y);
+        }
+        showMap(tmp);
     }
 }
 
@@ -102,6 +106,7 @@ void initialMap(struct background *tmp)
     *(*(tmp->map + tmp->startPos.y) + tmp->startPos.x) = START_POS;
  
     mazeCons(tmp);
+    *(*(tmp->map + tmp->currentPos.y) + tmp->currentPos.x) = END_POS;
 }
 
 void showMap(struct background *tmp)   //goto xy
@@ -112,10 +117,11 @@ void showMap(struct background *tmp)   //goto xy
         for (j = 0; j < MAZE_SIZE ; j++){
             //gotoxy(j * 2, i);
             switch (*(*(tmp->map + i)+ j)) {
-                case NILL:      printf(".."); break;
-                case ROAD:      printf("  "); break;
+                case NILL:      printf("..");  break;
+                case ROAD:      printf("  ");  break;
                 case WALL:      printf("[]");  break;
-                case START_POS: printf("SG");  break;
+                case START_POS: printf("SS");  break;
+                case END_POS:   printf("GG");  break;
             }
         }
         putchar('\n');

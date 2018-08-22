@@ -6,6 +6,7 @@
 #define WALL 1
 #define ROAD 2
 #define START_POS 3
+#define END_POS 4
 
 struct background{
     int **map;
