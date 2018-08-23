@@ -6,17 +6,17 @@
 #define LEFT   3
 #define RIGHT  4
 
-struct point{
-    int x;
-    int y;
-    int handle;
+struct point {
+	int x;
+	int y;
+	int handle;
 };
 
-struct point initialPoint(int x,  int y, int handle);
+struct point initialPoint(int x, int y, int handle);
 struct point startPoint(void);
 struct point handlePoint(int x, int y, int handle);
 bool checkNext(int x, int y, int **map);
-bool checkNextNill( int x, int y,int handle,int **map);
+bool checkNextNill(int x, int y, int handle, int **map);
 struct point findDril(int **map);
 
 #endif
