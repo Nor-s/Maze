@@ -107,8 +107,6 @@ void showSightPlayer(struct background *back, struct object *player)
 	case LEFTKEY:  showLeft(back, player); break;
 	case RIGHTKEY: showRight(back, player); break;
 	}
-	gotoxy(player->current.x * 2, player->current.y);
-	printf("PP");
 }
 
 void moveObject(struct object *player)
@@ -124,11 +122,15 @@ void moveObject(struct object *player)
 bool checkWall(struct background *back, struct object tmp)
 {
 	moveObject(&tmp);
+#ifdef DEBUG
 	gotoxy(60, 2);
 	printf("tmpObject x, y, handle: %3d %3d %3d", tmp.current.x, tmp.current.y, tmp.current.handle);
+#endif
 	if (back->map[tmp.current.y][tmp.current.x] == WALL) {
+#ifdef DEBUG
 		gotoxy(60, 4);
 		printf("map: %d", back->map[tmp.current.y][tmp.current.x]);
+#endif
 		return true;
 	} else
     	return false;
@@ -154,8 +156,10 @@ bool gameStart(struct background *back, struct object *player)
 		showSightPlayer(back, player);
 		back->currentPos = player->current;
 		showCurrentMap(back);
+#ifdef DEBUG
 		gotoxy(60, 1);
 		printf("player x, y, handle: %3d %3d %3d", player->current.x, player->current.y, player->current.handle);
+#endif
 		gotoxy(player->current.x*2, player->current.y);
 		printf("><");
 		if (back->endPos.x == player->current.x &&back->endPos.y == player->current.y)

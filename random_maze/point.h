@@ -11,6 +11,11 @@ struct point {
 	int y;
 	int handle;
 };
+struct stack{
+    int size;
+    int top;
+    struct point *stack;
+};
 
 struct point initialPoint(int x, int y, int handle);
 struct point startPoint(void);

@@ -50,15 +50,38 @@ bool checkNextNill(int x, int y, int handle, int **map)
 		return false;
 	return true;
 }
-
+void initialStack(struct stack *tmpStack)
+{
+	tmpStack->size = MAZE_SIZE * MAZE_SIZE;
+	tmpStack->top = 0;
+	tmpStack->stack = (struct point*)malloc(tmpStack->size * sizeof(struct point));
+}
+void stackPush(struct stack *tmpStack, struct point tmpPoint)
+{
+	tmpStack->stack[tmpStack->top++] = tmpPoint;
+}
+struct point stackRandPop(struct stack *tmpStack)
+{
+	int randPos = rand() % (tmpStack->top - 1);
+	struct point tmpPoint = tmpStack->stack[randPos];
+	tmpStack->stack[randPos] = tmpStack->stack[tmpStack->top - 1];
+	tmpStack->top--;
+	return tmpPoint;
+}
 struct point findDril(int **map)
 {
 	int i, j;
-
+	struct stack tmpStack;
+	struct point tmpPoint;
+	initialStack(&tmpStack);
 	for (i = 1; i < MAZE_SIZE - 1; i++) {
 		for (j = 1; j < MAZE_SIZE - 1; j++) {
 			if (*(*(map + i) + j) == WALL && checkNext(j, i, map))
-				return initialPoint(j, i, rand() % 4 + 1);
+				stackPush(&tmpStack, initialPoint(j, i, rand() % 4 + 1));
 		}
 	}
+
+	tmpPoint = stackRandPop(&tmpStack);
+	free(tmpStack.stack);
+	return tmpPoint;
 }

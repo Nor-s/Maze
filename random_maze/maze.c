@@ -60,6 +60,7 @@ struct point nextPoint(struct background *tmp)
 		next = findDril(tmp->map);
 		tmp->map[next.y][next.x] = ROAD;
 #ifdef DEBUG
+		gotoxy(70, 9);
 		printf("dril x: %d, y: %d, handle: %d\n", next.x, next.y, next.handle);
 #endif
 	}
@@ -76,20 +77,25 @@ struct point nextPoint(struct background *tmp)
 void mazeCons(struct background *tmp)
 {
 #ifdef DEBUG
+	showMap(tmp);
+	gotoxy(70, 5);
 	printf("startpoint handle: %d\n", tmp->currentPos.handle);
 #endif
 	while (checkNil(tmp)) {
 		nextPoint(tmp);
 #ifdef DEBUG
+		gotoxy(70, 6);
 		printf("nextpoint handle: %d\n", tmp->currentPos.handle);
 #endif
 		if (tmp->map[tmp->currentPos.y][tmp->currentPos.x] == NILL) {
 			tmp->map[tmp->currentPos.y][tmp->currentPos.x] = ROAD;
 #ifdef DEBUG
+			gotoxy(70, 7);
 			printf("Draw Road: %d, %d\n", tmp->currentPos.x, tmp->currentPos.y);
 #endif
 		}
 #ifdef DEBUG
+		gotoxy(70, 8);
 		printf("current Road: %d, %d\n", tmp->currentPos.x, tmp->currentPos.y);
 		showCurrentMap(tmp);
 #endif
@@ -124,9 +130,8 @@ void showMap(struct background *tmp)
 
 	for (i = 0; i < MAZE_SIZE; i++) {
 		for (j = 0; j < MAZE_SIZE; j++) {
-#ifndef DEBUG
+
 			gotoxy(j * 2, i);
-#endif
 			switch (*(*(tmp->map + i) + j)) {
 			case NILL:      printf("..");  break;
 			case ROAD:      printf("  ");  break;
@@ -135,9 +140,6 @@ void showMap(struct background *tmp)
 			case END_POS:   printf("GG");  break;
 			}
 		}
-#ifdef DEBUG
-		putchar('\n');
-#endif
 	}
 }
 
@@ -147,19 +149,14 @@ void showCurrentMap(struct background *tmp)
 
 	for (i = tmp->currentPos.y - 1; i < tmp->currentPos.y + 2; i++) {
 		for (j = tmp->currentPos.x - 1; j < tmp->currentPos.x + 2; j++) {
-#ifndef DEBUG
 			gotoxy(j * 2, i);
-#endif
 			switch (*(*(tmp->map + i) + j)) {
 			case NILL:      printf("..");  break;
-			case ROAD:      printf("  ");  break;
+			case ROAD:      printf("==");  break;
 			case WALL:      printf("[]");  break;
 			case START_POS: printf("SS");  break;
 			case END_POS:   printf("GG");  break;
 			}
 		}
-#ifdef DEBUG
-		putchar('\n');
-#endif
 	}
 }

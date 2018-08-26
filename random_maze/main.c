@@ -30,4 +30,5 @@ int main(void)
 		system("cls");
 		printf("YOU DIE\n");
 	}
+	//free(maze.map);
 }
