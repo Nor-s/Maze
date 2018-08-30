@@ -20,7 +20,7 @@ struct stack{
 struct point initialPoint(int x, int y, int handle);
 struct point startPoint(void);
 struct point handlePoint(int x, int y, int handle);
-bool checkNext(int x, int y, int **map);
+bool checkNext(int x, int y, int **map, int what);
 bool checkNextNill(int x, int y, int handle, int **map);
 struct point findDril(int **map);
 

@@ -29,10 +29,10 @@ void showDown(struct background *back, struct object *player)
 		for (j = player->current.x - 1; j < player->current.x + 2; j++) {
 			gotoxy(j * 2, i);
 			switch (*(*(back->map + i) + j)) {
-			case ROAD:      printf("==");  break;
-			case WALL:      printf("[]");  break;
-			case START_POS: printf("SS");  break;
-			case END_POS:   printf("GG");  break;
+			case ROAD:      printf(_ROAD);  break;
+			case WALL:      printf(_WALL);  break;
+			case START_POS: printf(_START);  break;
+			case END_POS:   printf(_END);  break;
 			}
 			if (*(*(back->map + i) + player->current.x) == WALL) {
 				printf("[]");
@@ -48,10 +48,10 @@ void showUp(struct background *back, struct object *player)
 		for (j = player->current.x - 1; j < player->current.x + 2; j++) {
 			gotoxy(j * 2, i);
 			switch (*(*(back->map + i) + j)) {
-			case ROAD:      printf("==");  break;
-			case WALL:      printf("[]");  break;
-			case START_POS: printf("SS");  break;
-			case END_POS:   printf("GG");  break;
+			case ROAD:      printf(_ROAD);  break;
+			case WALL:      printf(_WALL);  break;
+			case START_POS: printf(_START);  break;
+			case END_POS:   printf(_END);  break;
 			}
 			if (*(*(back->map + i) + player->current.x) == WALL) {
 				printf("[]");
@@ -67,12 +67,13 @@ void showRight(struct background *back, struct object *player)
 		for (i = player->current.y - 1; i < player->current.y + 2; i++) {
 			gotoxy(j * 2, i);
 			switch (*(*(back->map + i) + j)) {
-			case ROAD:      printf("==");  break;
-			case WALL:      printf("[]");  break;
-			case START_POS: printf("SS");  break;
-			case END_POS:   printf("GG");  break;
+			case ROAD:      printf(_ROAD);  break;
+			case WALL:      printf(_WALL);  break;
+			case START_POS: printf(_START);  break;
+			case END_POS:   printf(_END);  break;
 			}
 			if (*(*(back->map + player->current.y) + j) == WALL) {
+				gotoxy(j * 2, player->current.y);
 				printf("[]");
 				return;
 			}
@@ -86,12 +87,13 @@ void showLeft(struct background *back, struct object *player)
 		for (i = player->current.y - 1; i < player->current.y + 2; i++) {
 			gotoxy(j * 2, i);
 			switch (*(*(back->map + i) + j)) {
-			case ROAD:      printf("==");  break;
-			case WALL:      printf("[]");  break;
-			case START_POS: printf("SS");  break;
-			case END_POS:   printf("GG");  break;
+			case ROAD:      printf(_ROAD);  break;
+			case WALL:      printf(_WALL);  break;
+			case START_POS: printf(_START);  break;
+			case END_POS:   printf(_END);  break;
 			}
 			if (*(*(back->map + player->current.y) + j) == WALL) {
+				gotoxy(j * 2, player->current.y);
 				printf("[]");
 				return;
 			}

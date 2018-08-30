@@ -55,7 +55,7 @@ struct point nextPoint(struct background *tmp)
 	int tmphandle = rand() % 4 + 1;
 	struct point next = tmp->currentPos;
 
-	while (!checkNext(next.x, next.y, tmp->map)) {
+	while (!checkNext(next.x, next.y, tmp->map, NILL)) {
 
 		next = findDril(tmp->map);
 		tmp->map[next.y][next.x] = ROAD;
@@ -133,11 +133,11 @@ void showMap(struct background *tmp)
 
 			gotoxy(j * 2, i);
 			switch (*(*(tmp->map + i) + j)) {
-			case NILL:      printf("..");  break;
-			case ROAD:      printf("  ");  break;
-			case WALL:      printf("[]");  break;
-			case START_POS: printf("SS");  break;
-			case END_POS:   printf("GG");  break;
+			case NILL:      printf(_NILL);  break;
+			case ROAD:      printf(_ROAD);  break;
+			case WALL:      printf(_WALL);  break;
+			case START_POS: printf(_START);  break;
+			case END_POS:   printf(_END);  break;
 			}
 		}
 	}
@@ -151,11 +151,11 @@ void showCurrentMap(struct background *tmp)
 		for (j = tmp->currentPos.x - 1; j < tmp->currentPos.x + 2; j++) {
 			gotoxy(j * 2, i);
 			switch (*(*(tmp->map + i) + j)) {
-			case NILL:      printf("..");  break;
-			case ROAD:      printf("==");  break;
-			case WALL:      printf("[]");  break;
-			case START_POS: printf("SS");  break;
-			case END_POS:   printf("GG");  break;
+			case NILL:      printf(_NILL);  break;
+			case ROAD:      printf(_ROAD);  break;
+			case WALL:      printf(_WALL);  break;
+			case START_POS: printf(_START);  break;
+			case END_POS:   printf(_END);  break;
 			}
 		}
 	}

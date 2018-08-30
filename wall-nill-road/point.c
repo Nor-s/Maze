@@ -31,11 +31,11 @@ struct point handlePoint(int x, int y, int handle)
 	return  initialPoint(x, y, handle);
 }
 
-//can't find NILL -> false
-bool checkNext(int x, int y, int **map)
+//can't find what -> false
+bool checkNext(int x, int y, int **map, int what)
 {
-	if (map[y][x + 1] == NILL || map[y][x - 1] == NILL ||
-		map[y + 1][x] == NILL || map[y - 1][x] == NILL)
+	if (map[y][x + 1] == what || map[y][x - 1] == what ||
+		map[y + 1][x] == what || map[y - 1][x] == what)
 		return true;
 	return false;
 }
@@ -62,12 +62,13 @@ void stackPush(struct stack *tmpStack, struct point tmpPoint)
 }
 struct point stackRandPop(struct stack *tmpStack)
 {
-	int randPos = rand() % (tmpStack->top - 1);
+	int randPos = rand() % tmpStack->top;
 	struct point tmpPoint = tmpStack->stack[randPos];
 	tmpStack->stack[randPos] = tmpStack->stack[tmpStack->top - 1];
 	tmpStack->top--;
 	return tmpPoint;
 }
+
 struct point findDril(int **map)
 {
 	int i, j;
@@ -76,7 +77,7 @@ struct point findDril(int **map)
 	initialStack(&tmpStack);
 	for (i = 1; i < MAZE_SIZE - 1; i++) {
 		for (j = 1; j < MAZE_SIZE - 1; j++) {
-			if (*(*(map + i) + j) == WALL && checkNext(j, i, map))
+			if (*(*(map + i) + j) == WALL && checkNext(j, i, map, NILL) && !checkNext(j, i, map, START_POS))
 				stackPush(&tmpStack, initialPoint(j, i, rand() % 4 + 1));
 		}
 	}
