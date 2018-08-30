@@ -7,8 +7,6 @@
 #include "maze.h"
 #include "control.h"
 
-//#define DEBUG
-
 // i == y,  j == x
 bool checkNil(struct background *tmp)
 {
@@ -77,7 +75,7 @@ struct point nextPoint(struct background *tmp)
 void mazeCons(struct background *tmp)
 {
 #ifdef DEBUG
-	showMap(tmp);
+	showMap(0, MAZE_SIZE, 0, MAZE_SIZE, tmp);
 	gotoxy(70, 5);
 	printf("startpoint handle: %d\n", tmp->currentPos.handle);
 #endif
@@ -95,9 +93,9 @@ void mazeCons(struct background *tmp)
 #endif
 		}
 #ifdef DEBUG
+		showMap(tmp->currentPos.y - 1, tmp->currentPos.y + 2, tmp->currentPos.x - 1, tmp->currentPos.x + 2, tmp);
 		gotoxy(70, 8);
 		printf("current Road: %d, %d\n", tmp->currentPos.x, tmp->currentPos.y);
-		showCurrentMap(tmp);
 #endif
 	}
 }
@@ -124,39 +122,25 @@ void initialMap(struct background *tmp)
 	*(*(tmp->map + tmp->currentPos.y) + tmp->currentPos.x) = END_POS;
 }
 
-void showMap(struct background *tmp)
+
+
+void showObject(int j, int i, struct background *tmp)
 {
-	int i, j;
-
-	for (i = 0; i < MAZE_SIZE; i++) {
-		for (j = 0; j < MAZE_SIZE; j++) {
-
-			gotoxy(j * 2, i);
-			switch (*(*(tmp->map + i) + j)) {
-			case NILL:      printf(_NILL);  break;
-			case ROAD:      printf(_ROAD);  break;
-			case WALL:      printf(_WALL);  break;
-			case START_POS: printf(_START);  break;
-			case END_POS:   printf(_END);  break;
-			}
-		}
+	gotoxy(j * 2, i);
+	switch (*(*(tmp->map + i) + j)) {
+	case NILL:      printf("..");  break;
+	case ROAD:      printf("  ");  break;
+	case WALL:      printf("[]");  break;
+	case START_POS: printf("SS");  break;
+	case END_POS:   printf("GG");  break;
 	}
 }
 
-void showCurrentMap(struct background *tmp)
+void showMap(int ii, int ie, int jj, int je, struct background *tmp)
 {
 	int i, j;
-
-	for (i = tmp->currentPos.y - 1; i < tmp->currentPos.y + 2; i++) {
-		for (j = tmp->currentPos.x - 1; j < tmp->currentPos.x + 2; j++) {
-			gotoxy(j * 2, i);
-			switch (*(*(tmp->map + i) + j)) {
-			case NILL:      printf(_NILL);  break;
-			case ROAD:      printf(_ROAD);  break;
-			case WALL:      printf(_WALL);  break;
-			case START_POS: printf(_START);  break;
-			case END_POS:   printf(_END);  break;
-			}
+	for (i = ii; i < ie; i++)
+		for (j = jj; j < je; j++) {
+			showObject(j, i, tmp);
 		}
-	}
 }

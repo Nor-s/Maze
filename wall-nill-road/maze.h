@@ -8,13 +8,6 @@
 #define START_POS 3
 #define END_POS 4
 
-#define _WALL "[]"
-#define _ROAD "  "
-#define _START "SS"
-#define _END "GG"
-#define _PLAYER "><"
-#define _NILL ".."
-
 struct background {
 	int **map;
 	struct point startPos;
@@ -24,6 +17,6 @@ struct background {
 
 struct point nextPoint(struct background *tmp);
 void initialMap(struct background *tmp);
-void showMap(struct background *tmp);
-void showCurrentMap(struct background *tmp);
+void showObject(int j, int i,  struct background *tmp);
+void showMap(int ii, int ie, int jj, int je, struct background *tmp);
 #endif

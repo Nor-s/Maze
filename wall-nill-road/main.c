@@ -8,21 +8,24 @@
 #include "player.h"
 #include "control.h"
 
+//#define DEBUG
+
 int main(void)
 {
 	srand(time(NULL));
 
 	struct background maze;
 	initialMap(&maze);
-	showMap(&maze);
-
+#ifdef DEBUG
+	showMap(0, MAZE_SIZE, 0, MAZE_SIZE, &maze);
+#endif
 	struct object player = initialPlayer(&maze.startPos);
 	if (gameStart(&maze, &player)) {
 		system("cls");
-		showMap(&maze);
+		showMap(0, MAZE_SIZE, 0, MAZE_SIZE, &maze);
 		gotoxy(player.current.x * 2, player.current.y);
 		printf("><");
-		gotoxy(MAZE_SIZE-2 , MAZE_SIZE/2);
+		gotoxy(MAZE_SIZE - 2, MAZE_SIZE / 2);
 		printf("CLEAR!!");
 		Sleep(1000000);
 	}

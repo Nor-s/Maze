@@ -24,16 +24,10 @@ struct object initialPlayer(struct point *startPos)
 
 void showDown(struct background *back, struct object *player)
 {
-	int i,j;
+	int i, j;
 	for (i = player->current.y; i < player->current.y + player->sight; i++) {
 		for (j = player->current.x - 1; j < player->current.x + 2; j++) {
-			gotoxy(j * 2, i);
-			switch (*(*(back->map + i) + j)) {
-			case ROAD:      printf(_ROAD);  break;
-			case WALL:      printf(_WALL);  break;
-			case START_POS: printf(_START);  break;
-			case END_POS:   printf(_END);  break;
-			}
+			showObject(j, i, back);
 			if (*(*(back->map + i) + player->current.x) == WALL) {
 				printf("[]");
 				return;
@@ -46,13 +40,7 @@ void showUp(struct background *back, struct object *player)
 	int i, j;
 	for (i = player->current.y; i > player->current.y - player->sight; i--) {
 		for (j = player->current.x - 1; j < player->current.x + 2; j++) {
-			gotoxy(j * 2, i);
-			switch (*(*(back->map + i) + j)) {
-			case ROAD:      printf(_ROAD);  break;
-			case WALL:      printf(_WALL);  break;
-			case START_POS: printf(_START);  break;
-			case END_POS:   printf(_END);  break;
-			}
+			showObject(j, i, back);
 			if (*(*(back->map + i) + player->current.x) == WALL) {
 				printf("[]");
 				return;
@@ -65,13 +53,7 @@ void showRight(struct background *back, struct object *player)
 	int i, j;
 	for (j = player->current.x; j < player->current.x + player->sight; j++) {
 		for (i = player->current.y - 1; i < player->current.y + 2; i++) {
-			gotoxy(j * 2, i);
-			switch (*(*(back->map + i) + j)) {
-			case ROAD:      printf(_ROAD);  break;
-			case WALL:      printf(_WALL);  break;
-			case START_POS: printf(_START);  break;
-			case END_POS:   printf(_END);  break;
-			}
+			showObject(j, i, back);
 			if (*(*(back->map + player->current.y) + j) == WALL) {
 				gotoxy(j * 2, player->current.y);
 				printf("[]");
@@ -85,13 +67,7 @@ void showLeft(struct background *back, struct object *player)
 	int i, j;
 	for (j = player->current.x; j > player->current.x - player->sight; j--) {
 		for (i = player->current.y - 1; i < player->current.y + 2; i++) {
-			gotoxy(j * 2, i);
-			switch (*(*(back->map + i) + j)) {
-			case ROAD:      printf(_ROAD);  break;
-			case WALL:      printf(_WALL);  break;
-			case START_POS: printf(_START);  break;
-			case END_POS:   printf(_END);  break;
-			}
+			showObject(j, i, back);
 			if (*(*(back->map + player->current.y) + j) == WALL) {
 				gotoxy(j * 2, player->current.y);
 				printf("[]");
@@ -134,8 +110,9 @@ bool checkWall(struct background *back, struct object tmp)
 		printf("map: %d", back->map[tmp.current.y][tmp.current.x]);
 #endif
 		return true;
-	} else
-    	return false;
+	}
+	else
+		return false;
 }
 
 bool gameStart(struct background *back, struct object *player)
@@ -148,21 +125,21 @@ bool gameStart(struct background *back, struct object *player)
 		handle = getch();
 		tmpObject.current = player->current;
 		tmpObject.current.handle = handle;
-	    if(!(handle==UPKEY || handle == DOWNKEY || handle == LEFTKEY || handle == RIGHTKEY))
+		if (!(handle == UPKEY || handle == DOWNKEY || handle == LEFTKEY || handle == RIGHTKEY))
 			continue;
 		if (checkWall(back, tmpObject))
 			continue;
-	
-		player->current.handle = handle;      
+
+		player->current.handle = handle;
 		moveObject(player);
 		showSightPlayer(back, player);
 		back->currentPos = player->current;
-		showCurrentMap(back);
+		showMap(back->currentPos.y - 1, back->currentPos.y + 2, back->currentPos.x - 1, back->currentPos.x + 2, back);
 #ifdef DEBUG
 		gotoxy(60, 1);
 		printf("player x, y, handle: %3d %3d %3d", player->current.x, player->current.y, player->current.handle);
 #endif
-		gotoxy(player->current.x*2, player->current.y);
+		gotoxy(player->current.x * 2, player->current.y);
 		printf("><");
 		if (back->endPos.x == player->current.x &&back->endPos.y == player->current.y)
 			return true;
