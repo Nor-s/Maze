@@ -8,7 +8,7 @@
 #include "player.h"
 #include "control.h"
 
-//#define DEBUG
+#define DEBUG
 
 int main(void)
 {

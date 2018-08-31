@@ -27,26 +27,12 @@ void makeOneWall(int x, int y, int **map)
 }
 void makeAdjWall(struct background *tmp, int handle)
 {
-	switch (handle) {
-	case UP:
 		makeOneWall(tmp->currentPos.x + 1, tmp->currentPos.y, tmp->map);
-		makeOneWall(tmp->currentPos.x - 1, tmp->currentPos.y, tmp->map);
-		makeOneWall(tmp->currentPos.x, tmp->currentPos.y + 1, tmp->map); break;
-	case DOWN:
-		makeOneWall(tmp->currentPos.x + 1, tmp->currentPos.y, tmp->map);
-		makeOneWall(tmp->currentPos.x - 1, tmp->currentPos.y, tmp->map);
-		makeOneWall(tmp->currentPos.x, tmp->currentPos.y - 1, tmp->map); break;
-	case LEFT:
-		makeOneWall(tmp->currentPos.x + 1, tmp->currentPos.y, tmp->map);
-		makeOneWall(tmp->currentPos.x, tmp->currentPos.y + 1, tmp->map);
-		makeOneWall(tmp->currentPos.x, tmp->currentPos.y - 1, tmp->map); break;
-	case RIGHT:
 		makeOneWall(tmp->currentPos.x - 1, tmp->currentPos.y, tmp->map);
 		makeOneWall(tmp->currentPos.x, tmp->currentPos.y + 1, tmp->map);
-		makeOneWall(tmp->currentPos.x, tmp->currentPos.y - 1, tmp->map); break;
-	}
+		makeOneWall(tmp->currentPos.x, tmp->currentPos.y -1, tmp->map);
 }
-/* a better method: (around == nill -> push stack)  & (if !checkNext -> pop) */
+/* another  method: (around == nill -> push stack)  & (if !checkNext -> pop) */
 /* another method:  linked list: start <- next <- nextnext......             */
 struct point nextPoint(struct background *tmp)
 {
@@ -85,13 +71,8 @@ void mazeCons(struct background *tmp)
 		gotoxy(70, 6);
 		printf("nextpoint handle: %d\n", tmp->currentPos.handle);
 #endif
-		if (tmp->map[tmp->currentPos.y][tmp->currentPos.x] == NILL) {
+	//	if (tmp->map[tmp->currentPos.y][tmp->currentPos.x] == NILL) 
 			tmp->map[tmp->currentPos.y][tmp->currentPos.x] = ROAD;
-#ifdef DEBUG
-			gotoxy(70, 7);
-			printf("Draw Road: %d, %d\n", tmp->currentPos.x, tmp->currentPos.y);
-#endif
-		}
 #ifdef DEBUG
 		showMap(tmp->currentPos.y - 1, tmp->currentPos.y + 2, tmp->currentPos.x - 1, tmp->currentPos.x + 2, tmp);
 		gotoxy(70, 8);
@@ -122,8 +103,6 @@ void initialMap(struct background *tmp)
 	*(*(tmp->map + tmp->currentPos.y) + tmp->currentPos.x) = END_POS;
 }
 
-
-
 void showObject(int j, int i, struct background *tmp)
 {
 	gotoxy(j * 2, i);
@@ -140,7 +119,6 @@ void showMap(int ii, int ie, int jj, int je, struct background *tmp)
 {
 	int i, j;
 	for (i = ii; i < ie; i++)
-		for (j = jj; j < je; j++) {
+		for (j = jj; j < je; j++)
 			showObject(j, i, tmp);
-		}
 }
