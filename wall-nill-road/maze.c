@@ -114,11 +114,14 @@ void showObject(int j, int i, struct background *tmp)
 	case END_POS:   printf("GG");  break;
 	}
 }
-
-void showMap(int ii, int ie, int jj, int je, struct background *tmp)
+void forfor(int ii, int ie, int ji, int je, struct background *tmp, void (*f ) (int, int, struct background*))
 {
 	int i, j;
 	for (i = ii; i < ie; i++)
-		for (j = jj; j < je; j++)
-			showObject(j, i, tmp);
+		for (j = ji; j < je; j++)
+		   (*f)(j, i, tmp);
+}
+void showMap(int ii, int ie, int jj, int je, struct background *tmp)
+{
+	forfor(ii, ie, jj, je, tmp,  showObject );
 }
